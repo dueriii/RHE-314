@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<!--
+Love Letters reimplementation
+copyright (c) 2014 Nick Montfort <nickm@nickm.com>
+based on a 1952 program by Christopher Strachey
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
+IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+Updated 10 March 2015 to correct the word lists. Sources are photographs
+of Christoper Stachey's notes in the Bodleian Library from J.R. Carpenter
+and table 14.1 in Noah Wardrip-Fruin's article "Digital Media Archaeology."
+
+Updated 28 August 2019 to add a link to "The Ferranti Mark 1 Gallery."
+-->
+<style type="text/css">
+/* <![CDATA[ */
+body {
+ background:#000;
+ color:#ccc;
+ margin:0 0 0 18pt;
+ font-family:Optima, sans-serif;
+ font-size:16pt;
+}
+a {
+ color:#117;
+ text-decoration:none;
+}
+#main {
+ padding-top:18px;
+ width:70%;
+}
+#main div {
+ font-weight:bold;
+ padding-bottom:9px;
+}
+#info {
+ top:0;
+ right:0;
+ bottom:0;
+ position:absolute;
+ height:100%;
+ width:25%;
+ color:#255;
+ background:#888;
+ margin-left:6px;
+ border-left:thin #000 solid;
+ border-bottom:thin #000 solid;
+ padding:9px;
+ font-size:80%
+}
+/* ]]> */
+</style>
+<script type="text/javascript">
+
+// Replaced all words with antonyms
+
+var t = 0,
+first = ['Satanic', 'Evil', 'Grim', 'Spiteful'],
+second = ['Mistress', 'Monster', 'Reaper', 'Spirit'],
+adjectives = ['Cursed', 'Aloof', 'Cold', 'Anxious', 'Ardent', 'Hateful', 'Breathless', 'Burning', 'Covetous', 'Craving', 'Bored', 'Grudge', 'Dear', 'Devoted', 'Greedy', 'erotic', 'Frigid', 'Unexcited', 'Impatient', 'Indifferent', 'Big', 'Hateable', 'Lovesick', 'Hatefully', 'Boringly', 'Normal', 'Bitter', 'Unruly', 'Hard', 'Unsatisfied', 'Insincere'],
+nouns = ['Disregard', 'Dislike', 'Condemnation', 'Hunger', 'Apathy', 'Uglyness', 'Undesire', 'Lustful', 'Boredom', 'Denial', 'Indifference', 'Shitty', 'Lethargy', 'Weakness', 'Heart', 'Hunger', 'Dislike', 'Liking', 'Longing', 'Hate', 'Lust', 'Discourage', 'Rapture', 'Coldness', 'Coldness', 'Thirst', 'Wish', 'Disyearning'],
+adverbs = ['Ardently', 'Anxiously', 'Grudgingly', 'Colorlessly', 'Ugly', 'Wistfully', 'Burningly', 'Fiercly', 'Hatefully', 'Dumbly', 'Enviously', 'Fervently', 'Rudely', 'Impatiently', 'Keenly', 'Ungratefully', 'Thanklessly', 'Seductively','Wistfully'],
+verbs = ['Hates', 'Detracts', 'Cares Not For', 'Disregards', 'Fights', 'Desires','Holds Hate', 'Hopes Not For', 'Hungers For', 'Is seperated to', 'Dislikes', 'Hates', 'Loves', 'Lust For', 'Screams', 'Pines For', 'Disregards', 'Sighs For', 'Contempts', 'Thirst For', 'Treasures', 'Dislikes', 'Wishes', 'Woes', 'Burns For'];
+
+function rand_range(maximum) {
+    "use strict";
+    return Math.floor(Math.random() * (maximum + 1));
+}
+function choose(array) {
+    "use strict";
+    return array[rand_range(array.length - 1)];
+}
+function maybe(words) {
+    "use strict";
+    if (Math.random() > 0.5) {
+        return ' ' + choose(words);
+    }
+    return '';
+}
+function longer() {
+    "use strict";
+    return ' MY' + maybe(adjectives) + ' ' + choose(nouns) + maybe(adverbs) + ' ' + choose(verbs) + ' YOUR' + maybe(adjectives) + ' ' + choose(nouns) + '.';
+}
+function shorter() {
+    "use strict";
+    return ' ' + choose(adjectives) + ' ' + choose(nouns) + '.';
+}
+function letter() {
+    "use strict";
+    var i, type, you_are = false, text = '';
+    text = text + choose(first) + ' ' + choose(second) + '<br /><br />';
+
+    for (i = 0; i < 5; i = i + 1) {
+        type = choose(['longer', 'shorter']);
+        if (type === 'longer') {
+            text = text + longer();
+            you_are = false;
+        } else {
+            if (you_are) {
+                text = text.slice(0, -1) + ': MY' + shorter();
+                you_are = false;
+            } else {
+                text = text + ' YOU ARE MY' + shorter();
+                you_are = true;
+            }
+        }
+    }
+    text = text + '<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;YOURS ' + choose(adverbs) + '<br /><br />' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M.U.C.';
+    return text;
+}
+function litany() {
+    "use strict";
+    var last, main = document.getElementById('main');
+    if (4 > t) {
+        t += 1;
+    } else {
+        main.removeChild(document.getElementById('main').firstChild);
+    }
+    last = document.createElement('div');
+    last.innerHTML = letter();
+    main.appendChild(last);
+}
+function produce_litany() {
+    "use strict";
+    litany();
+    setInterval(litany, 1000);
+}
+
+//inserted my name to the cover and sped up feed
+
+</script>
+  <title>Love Letters</title>
+</head>
+
+<body onload="produce_litany();">
+<div id="info">
+    <h2>Hate Letters</h2>
+    <h3>William Alcorn</h3>
+    2020<br />
+    <a href="http://curation.cs.manchester.ac.uk/digital60/www.digital60.org/rebuild/50th/gallery/gallery2/index.html">Ferranti Mark 1</a><br />
+    Autocode<br />
+    <br />
+    Exercise One<br />
+    <a href="http://nickm.com">Nick Montfort</a><br />
+    for <a href="http://nickm.com/memslam/">Memory Slam</a><br />
+    Also: a <a href="love_letters.py">Python 2/3</a> version
+</div>
+<div id="main"></div>
+</body>
+</html>
